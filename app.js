@@ -30,7 +30,7 @@ app.get('/weather/', (req, res) => {
 
 app.get('/location/', async(req, res, next) => {
     try {
-        const location = request.query.search;
+        const location = req.query.search;
         const URL = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json`;
         lat = firstResult.lat;
         lng = firstResult.lon;
