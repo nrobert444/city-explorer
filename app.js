@@ -11,7 +11,7 @@ let lat;
 let lng;
 
 const getWeatherData = (lat, lng) => {
-    const URL = `https://api.darksky.net/forecast/${DARKSKY_API_KEY}/${lat},${lng}`;
+    const URL = `https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${lat},${lng}`;
 
     return weather.daily.data.map(forecast =>{
         return { 
@@ -31,7 +31,7 @@ app.get('/weather/', (req, res) => {
 app.get('/location/', async(req, res, next) => {
     try {
         const location = request.query.search;
-        const URL = 'https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json';
+        const URL = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json`;
         lat = firstResult.lat;
         lng = firstResult.lon;
 
