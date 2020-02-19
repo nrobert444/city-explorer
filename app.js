@@ -21,14 +21,14 @@ const getWeatherData = async(lat, lng) => {
     });
 };
 
-app.get('/weather', async(req, res) => {
+app.get('/weather/', async(req, res) => {
     const portlandWeather = await getWeatherData(lat, lng);
 
     res.json(portlandWeather);
 });
 
 
-app.get('/location', async(req, res, next) => {
+app.get('/location/', async(req, res, next) => {
     try {
         const location = req.query.search;
         const URL = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json`;
