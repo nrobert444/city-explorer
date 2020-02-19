@@ -19,7 +19,6 @@ const getWeatherData = (/*lat, lng*/) => {
         };   
     });
 };
-console.log(getWeatherData())
 
 app.get('/weather/', (req, res) => {
     const portlandWeather = getWeatherData(/*lat, lng*/);
