@@ -21,10 +21,14 @@ const getWeatherData = async(lat, lng) => {
     });
 };
 
-app.get('/weather/', async(req, res) => {
-    const portlandWeather = await getWeatherData(lat, lng);
+app.get('/weather/', async(req, res, next) => {
+    try {
+        const portlandWeather = await getWeatherData(lat, lng);
 
-    res.json(portlandWeather);
+        res.json(portlandWeather);
+    } catch (err) {
+        next(err);
+    }
 });
 
 
