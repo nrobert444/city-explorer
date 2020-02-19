@@ -1,23 +1,30 @@
 const express = require('express');
-const request = require('superagent');
+// const request = require('superagent');
 const app = express();
-const darkSky = require('./Data/darkSky.json');
+const weather = require('./Data/darkSky.json');
 const port = process.env.PORT || 3000;
 const geoData = require('./Data/geo.json');
+// const cors = require('cors');
 
+getWeatherData(lat, lng){
+    weather.daily.data.map(forecast =>{
+        return { 
+            forecast: forecast.summary,
+            time: new Date(forecast.time),  
+        };   
+    })
+};
 
-app.get('/weather/', (request, respond) => {
-    const forecast = darkSky.daily.data;
+app.get('/weather/', (req, res) => {
+    const portlandWeather = getWeatherData();
 
-    respond.json({
-        forecast: forecast.summary,
-        time: forecast.time
-    });
+    res.json(portlandWeather);
 });
 
-app.get('/location/', (request, respond) => {
+
+app.get('/location/', (req, res) => {
     const cityData = geoData.results[0];
-    respond.json(
+    res.json(
         {
             formatted_query: cityData.formatted_address,
             latitude: cityData.geometry.location.lat,
