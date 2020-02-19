@@ -1,17 +1,18 @@
 const express = require('express');
-// const request = require('superagent');
+const request = require('superagent');
 const app = express();
 const weather = require('./Data/darkSky.json');
 const port = process.env.PORT || 3000;
-const geoData = require('./Data/geo.json');
 const cors = require('cors');
-
+require('dotenv').config();
 app.use(cors());
 
 let lat;
 let lng;
 
-const getWeatherData = (/*lat, lng*/) => {
+const getWeatherData = (lat, lng) => {
+    const URL = `https://api.darksky.net/forecast/${DARKSKY_API_KEY}/${lat},${lng}`;
+
     return weather.daily.data.map(forecast =>{
         return { 
             forecast: forecast.summary,
@@ -21,30 +22,31 @@ const getWeatherData = (/*lat, lng*/) => {
 };
 
 app.get('/weather/', (req, res) => {
-    const portlandWeather = getWeatherData(/*lat, lng*/);
+    const portlandWeather = getWeatherData(lat, lng);
 
     res.json(portlandWeather);
 });
 
 
-app.get('/location/', (req, res) => {
-    // const location = request.query.search;
-    
-    lat = cityData.geometry.location.lat;
-    lng = cityData.geometry.location.lng;
+app.get('/location/', async(req, res, next) => {
+    try {
+        const location = request.query.search;
+        const URL = 'https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json';
+        lat = firstResult.lat;
+        lng = firstResult.lon;
 
-    const cityData = geoData.results[0];
+        const cityData = await request.get(URL);
+        const firstResult = cityData.body[0];
 
-    res.json(
-        {
-            formatted_query: cityData.formatted_address,
-            latitude: cityData.geometry.location.lat,
-            longitude: cityData.geometry.location.lng
-        });
-});
-
-app.listen(port, () => {
-    console.log('<-----------blast off!---------------->');
+        res.json(
+            {
+                formatted_query: firstResult.display_name,
+                latitude: lat,
+                longitude: lng
+            });
+    } catch (err) {
+        next(err);
+    }
 });
 
 
