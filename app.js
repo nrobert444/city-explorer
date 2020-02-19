@@ -11,15 +11,15 @@ app.use(cors());
 let lat;
 let lng;
 
-
 const getWeatherData = (/*lat, lng*/) => {
-    weather.daily.data.map(forecast =>{
+    return weather.daily.data.map(forecast =>{
         return { 
             forecast: forecast.summary,
             time: new Date(forecast.time * 1000),  
         };   
     });
 };
+console.log(getWeatherData())
 
 app.get('/weather/', (req, res) => {
     const portlandWeather = getWeatherData(/*lat, lng*/);
