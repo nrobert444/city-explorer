@@ -14,14 +14,14 @@ const getWeatherData = async(lat, lng) => {
     const URL = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${lat},${lng}`;
 
     const weatherData = await request.get(URL);
-    const result = weatherData.body;
+    const results = weatherData.daily.data;
 
     console.log(result);
 
-    return result.daily.data.map(forecast =>{
+    return results.map(result =>{
         return { 
-            forecast: forecast.summary,
-            time: new Date(forecast.time * 1000),  
+            forecast: results.summary,
+            time: new Date(results.time * 1000),  
         };   
     });
 };
