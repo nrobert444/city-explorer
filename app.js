@@ -12,24 +12,24 @@ let lat;
 let lng;
 
 
-getWeatherData(lat, lng){
+const getWeatherData = (/*lat, lng*/) => {
     weather.daily.data.map(forecast =>{
         return { 
             forecast: forecast.summary,
             time: new Date(forecast.time * 1000),  
         };   
-    })
+    });
 };
 
 app.get('/weather/', (req, res) => {
-    const portlandWeather = getWeatherData(lat, lng);
+    const portlandWeather = getWeatherData(/*lat, lng*/);
 
     res.json(portlandWeather);
 });
 
 
 app.get('/location/', (req, res) => {
-    const location = request.query.search;
+    // const location = request.query.search;
     
     lat = cityData.geometry.location.lat;
     lng = cityData.geometry.location.lng;
@@ -43,7 +43,7 @@ app.get('/location/', (req, res) => {
             longitude: cityData.geometry.location.lng
         });
 });
-// has to go into it's own index.js file for testing later
+
 app.listen(port, () => {
     console.log('<-----------blast off!---------------->');
 });
