@@ -1,7 +1,7 @@
 const express = require('express');
 const request = require('superagent');
 const app = express();
-const darkSky = require('./Data/darksky.json');
+const darkSky = require('./Data/darkSky.json');
 const port = process.env.PORT || 3000;
 const geoData = require('./Data/geo.json');
 
