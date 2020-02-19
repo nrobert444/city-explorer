@@ -35,7 +35,7 @@ app.get('/weather/', async(req, res, next) => {
 app.get('/location/', async(req, res, next) => {
     try {
         const location = req.query.search;
-        const URL = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json`;
+        const URL = (`https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json`);
 
         const cityData = await request.get(URL);
         const firstResult = cityData.body[0];
@@ -55,6 +55,16 @@ app.get('/location/', async(req, res, next) => {
     }
 });
 
+// app.get('/reviews' async(req, res)=> {
+//     const yelpStuff = await request.get(`yelp url`)).set('Authorization', 'Bearer ${process.env.YELP_API_KEY}');
+
+//     res.json(yelpStuff);
+// })
+
+// app.get('/events' async(req, res)=> {
+//     const eventStuff = await request.get(`yelp url`)).setEncoding('Authorization', 'Bearer ${process.env.YELP_API_KEY}');
+
+//     res.json(eventStuff);
 
 app.get('*', (req, res) => res.send('404 error buddy!!!!!!'));
 
