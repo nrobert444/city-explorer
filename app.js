@@ -1,9 +1,9 @@
 const express = require('express');
 const request = require('superagent');
 const app = express();
-const darkSky = require('./data/darksky.json');
+const darkSky = require('./Data/darksky.json');
 const port = process.env.PORT || 3000;
-const geoData = require('./data/geo.json');
+const geoData = require('./Data/geo.json');
 
 
 app.get('/weather/', (request, respond) => {
