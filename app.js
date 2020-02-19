@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 const geoData = require('./Data/geo.json');
 const cors = require('cors');
 
-app.use(cors);
+app.use(cors());
 
 let lat;
 let lng;
