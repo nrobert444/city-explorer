@@ -79,7 +79,8 @@ app.get('/reviews', async(req, res) => {
 
 app.get('/events', async(req, res) => {
     try {
-        const evBrite = await request.get(`http://api.eventful.com/rest/events/search?app_key=${process.env.EVENTBRITE_API_KEY}&where=${lat},${lng}&within=25`);
+        const evBrite = await request.get(`http://api.eventful.com/json/events/search?app_key=${process.env.EVENTBRITE_API_KEY}&where=${lat},${lng}&within=25`);
+
 
         
         const eventBriteStuff = evBrite.body.businesses.map(event =>{
