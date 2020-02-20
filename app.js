@@ -101,6 +101,35 @@ app.get('/events', async(req, res) => {
     }
 });
 
+app.get('/trails', async(req, res) => {
+    try {
+        const trails = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lng}&maxDistance=10&key=${process.env.TRAIL_API_KEY}`);
+        
+        const trailStuff = trails.body.trails.map(trail =>{
+
+            return {
+                name: trail.name,
+                location: trail.location,
+                length: trail.length,
+                stars: trail.stars,
+                star_votes: trail.starVotes,
+                summary: trail.summary,
+                trail_url: trail.url,
+                conditions: trail.conditionsStatus,
+                condition_date: trail.conditionDate.splice(0, 9),
+                condition_time: trail.conditionDate.splice(-1, 9)
+            };
+        });
+        
+        res.json(trailStuff);
+
+    } catch (err) {
+        res.status(500).send('Sorry something went wrong, please try again');
+    }
+});
+
+
+
 app.get('*', (req, res) => res.send('404 error buddy!!!!!!'));
 
 
