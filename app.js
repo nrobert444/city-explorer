@@ -27,7 +27,7 @@ app.get('/weather/', async(req, res, next) => {
 
         res.json(portlandWeather);
     } catch (err) {
-        next(err);
+        res.status(500).send('Sorry something went wrong, please try again');
     }
 });
 
@@ -51,15 +51,28 @@ app.get('/location/', async(req, res, next) => {
                 longitude: lng
             });
     } catch (err) {
-        next(err);
+        res.status(500).send('Sorry something went wrong, please try again');
+
     }
 });
 
-// app.get('/reviews' async(req, res)=> {
-//     const yelpStuff = await request.get(`yelp url`)).set('Authorization', 'Bearer ${process.env.YELP_API_KEY}');
-
-//     res.json(yelpStuff);
-// })
+app.get('/reviews', async(req, res) => {
+    try {
+        const yelp = await request
+            .get(`https://api.yelp.com/v3/businesses/search/${lat},${lng}`)
+            .set('Authorization', `Bearer ${process.env.YELP_API_KEY}`);
+        const yelpStuff = yelp.body.businesses;
+        res.json({
+            name: yelpStuff.name,
+            image: yelpStuff.image_url,
+            price: yelpStuff.price,
+            rating: yelpStuff.rating,
+            url: yelpStuff.url,
+        });
+    } catch (err) {
+        res.status(500).send('Sorry something went wrong, please try again');
+    }
+});
 
 // app.get('/events' async(req, res)=> {
 //     const eventStuff = await request.get(`yelp url`)).setEncoding('Authorization', 'Bearer ${process.env.YELP_API_KEY}');
