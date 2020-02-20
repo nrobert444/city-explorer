@@ -116,11 +116,10 @@ app.get('/trails', async(req, res) => {
                 summary: trail.summary,
                 trail_url: trail.url,
                 conditions: trail.conditionsStatus,
-                condition_date: trail.conditionDate.splice(0, 9),
-                condition_time: trail.conditionDate.splice(-1, 9)
+                condition_date: trail.conditionDate.substring(0, 10),
+                condition_time: trail.conditionDate.substring(10)
             };
         });
-        
         res.json(trailStuff);
 
     } catch (err) {
