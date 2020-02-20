@@ -58,7 +58,7 @@ app.get('/location/', async(req, res) => {
 
 app.get('/reviews', async(req, res) => {
     try {
-        const yelp = await request.get(`https://api.yelp.com/v3/businesses/search/term=restaurants&latitude=${lat}&longitude=${lng}`).set('Authorization', `Bearer ${process.env.YELP_API_KEY}`);
+        const yelp = await request.get(`https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=${lat}&longitude=${lng}`).set('Authorization', `Bearer ${process.env.YELP_API_KEY}`);
         
         const yelpStuff = yelp.body.businesses.map(business =>{
             return {
