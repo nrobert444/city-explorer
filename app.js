@@ -21,7 +21,7 @@ const getWeatherData = async(lat, lng) => {
     });
 };
 
-app.get('/weather/', async(req, res) => {
+app.get('/weather', async(req, res) => {
     try {
         const portlandWeather = await getWeatherData(lat, lng);
 
@@ -32,7 +32,7 @@ app.get('/weather/', async(req, res) => {
 });
 
 
-app.get('/location/', async(req, res) => {
+app.get('/location', async(req, res) => {
     try {
         const location = req.query.search;
         const URL = (`https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json`);
@@ -115,7 +115,7 @@ app.get('/trails', async(req, res) => {
                 star_votes: trail.starVotes,
                 summary: trail.summary,
                 trail_url: trail.url,
-                conditions: trail.conditionsStatus,
+                conditions: trail.conditionStatus,
                 condition_date: trail.conditionDate.substring(0, 10),
                 condition_time: trail.conditionDate.substring(10)
             };
