@@ -85,7 +85,7 @@ app.get('/events', async(req, res) => {
 
 
         
-        const eventBriteStuff = events.events.map(event =>{
+        const eventBriteStuff = events.events.event.map(event =>{
             return {
                 link: event.url,
                 name: event.title,
