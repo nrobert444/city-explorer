@@ -21,7 +21,7 @@ const getWeatherData = async(lat, lng) => {
     });
 };
 
-app.get('/weather/', async(req, res, next) => {
+app.get('/weather/', async(req, res) => {
     try {
         const portlandWeather = await getWeatherData(lat, lng);
 
@@ -32,7 +32,7 @@ app.get('/weather/', async(req, res, next) => {
 });
 
 
-app.get('/location/', async(req, res, next) => {
+app.get('/location/', async(req, res) => {
     try {
         const location = req.query.search;
         const URL = (`https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${location}&format=json`);
@@ -59,25 +59,46 @@ app.get('/location/', async(req, res, next) => {
 app.get('/reviews', async(req, res) => {
     try {
         const yelp = await request
-            .get(`https://api.yelp.com/v3/businesses/search/${lat},${lng}`)
+            .get(`https://api.yelp.com/v3/businesses/search/term=restaurants&latitude=${lat}&longitude=${lng}`)
             .set('Authorization', `Bearer ${process.env.YELP_API_KEY}`);
-        const yelpStuff = yelp.body.businesses;
-        res.json({
-            name: yelpStuff.name,
-            image: yelpStuff.image_url,
-            price: yelpStuff.price,
-            rating: yelpStuff.rating,
-            url: yelpStuff.url,
+        
+        const yelpStuff = yelp.body.businesses.map(business =>{
+            return {
+                name: business.name,
+                image: business.image_url,
+                price: business.price,
+                rating: business.rating,
+                url: business.url
+            };
         });
+        
+        res.json(yelpStuff);
+
     } catch (err) {
         res.status(500).send('Sorry something went wrong, please try again');
     }
 });
 
-// app.get('/events' async(req, res)=> {
-//     const eventStuff = await request.get(`yelp url`)).setEncoding('Authorization', 'Bearer ${process.env.YELP_API_KEY}');
+app.get('/events', async(req, res) => {
+    try {
+        const evBrite = await request.get(`http://api.eventful.com/rest/events/search?app_key=${process.env.EVENTBRITE_API_KEY}&where=${lat},${lng}&within=25`);
 
-//     res.json(eventStuff);
+        
+        const eventBriteStuff = evBrite.body.businesses.map(event =>{
+            return {
+                link: event.url,
+                name: event.title,
+                event_date: event.start_time,
+                summary: event.description
+            };
+        });
+        
+        res.json(eventBriteStuff);
+
+    } catch (err) {
+        res.status(500).send('Sorry something went wrong, please try again');
+    }
+});
 
 app.get('*', (req, res) => res.send('404 error buddy!!!!!!'));
 
