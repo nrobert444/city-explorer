@@ -17,7 +17,7 @@ const getWeatherData = async(lat, lng) => {
         return { 
             forecast: result.summary,
             time: new Date(result.time * 1000),  
-        };   
+        }; 
     });
 };
 
